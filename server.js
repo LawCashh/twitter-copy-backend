@@ -1,11 +1,12 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-if (process.env.NODE_ENV == 'development') {
-  dotenv.config({ path: './config.env' });
-} else if (process.env.NODE_ENV == 'production') {
-  dotenv.config({ path: './config-production.env' });
-}
+// if (process.env.NODE_ENV == 'development') {
+//   dotenv.config({ path: './config.env' });
+// } else if (process.env.NODE_ENV == 'production') {
+//   dotenv.config({ path: './config-production.env' });
+// }
+dotenv.config({ path: './config.env' });
 
 const app = require('./app');
 

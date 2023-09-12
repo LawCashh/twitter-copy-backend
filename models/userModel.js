@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
     minLength: 8,
     required: [true, "The password can't be empty"],
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'owner'],
+    default: 'user',
+  },
 });
 
 const User = mongoose.model('User', userSchema);
