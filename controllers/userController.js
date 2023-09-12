@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const promisify = require('promisify');
 const { signTokenAndStoreInCookie, clearJWT } = require('./authController');
+const Tweet = require('../models/tweetModel');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   users = await User.find();
@@ -128,4 +129,32 @@ exports.deleteUser = catchAsync(async (req, res) => {
   res
     .status(200)
     .json({ status: 'ok', message: 'uspjesno obrisan korisnik', data: user });
+});
+
+exports.getUserInfo = catchAsync(async (req, res) => {
+  const id = new mongoose.Types.ObjectId(req.params.id);
+  const user = await User.find({
+    _id: id,
+  }).select(['-_id']);
+  if (user.length == 0)
+    return res
+      .status(404)
+      .json({ status: 'not ok', message: 'user ne postoji' });
+  res.status(200).json({ status: 'ok', message: 'uzeti podaci', data: user });
+});
+
+exports.getTweetsByUser = catchAsync(async (req, res) => {
+  const user = await User.find({
+    _id: new mongoose.Types.ObjectId(req.params.id),
+  });
+  if (user.length == 0)
+    return res
+      .status(404)
+      .json({ status: 'not ok', message: 'user not found' });
+  const tweets = await Tweet.find({
+    userId: new mongoose.Types.ObjectId(req.params.id),
+  }).sort('-createdOn');
+  res
+    .status(200)
+    .json({ status: 'ok', message: 'uzeti tweetovi korisnika', data: tweets });
 });

@@ -10,6 +10,10 @@ const tweetSchema = mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  createdOn: {
+    type: Date,
+    required: true,
+  },
 });
 
 const Tweet = mongoose.model('Tweet', tweetSchema);

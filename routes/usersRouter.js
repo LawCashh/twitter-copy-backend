@@ -15,6 +15,12 @@ usersRouter.get('/logout', (req, res, next) => {
   res.clearCookie('jwt');
   res.status(200).json({ status: 'ok', message: 'logged out' });
 });
+usersRouter.get('/:id', authController.verifyJWT, userController.getUserInfo);
+usersRouter.get(
+  '/:id/tweets',
+  authController.verifyJWT,
+  userController.getTweetsByUser
+);
 usersRouter.patch('/:id', authController.verifyJWT, userController.editUser);
 usersRouter.post('/login', userController.login);
 usersRouter.delete(
